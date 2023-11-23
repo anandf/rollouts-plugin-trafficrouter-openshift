@@ -3,10 +3,7 @@ package main
 import (
 	"flag"
 
-	"log/slog"
-
 	"github.com/argoproj-labs/rollouts-plugin-trafficrouter-openshift/pkg/plugin"
-	"github.com/argoproj-labs/rollouts-plugin-trafficrouter-openshift/pkg/utils"
 	rolloutsPlugin "github.com/argoproj/argo-rollouts/rollout/trafficrouting/plugin/rpc"
 	goPlugin "github.com/hashicorp/go-plugin"
 )
@@ -21,12 +18,12 @@ var handshakeConfig = goPlugin.HandshakeConfig{
 	MagicCookieValue: "trafficrouter",
 }
 
-var lvl = flag.Int("l", int(slog.LevelInfo), "the logging level for 'log/slog', (default: 0)")
+//var lvl = flag.Int("l", int(slog.LevelInfo), "the logging level for 'log/slog', (default: 0)")
 
 func main() {
 	flag.Parse()
 
-	utils.InitLogger(slog.Level(*lvl))
+	//utils.InitLogger(slog.Level(*lvl))
 
 	rpcPluginImp := &plugin.RpcPlugin{}
 
@@ -35,7 +32,7 @@ func main() {
 		"RpcTrafficRouterPlugin": &rolloutsPlugin.RpcTrafficRouterPlugin{Impl: rpcPluginImp},
 	}
 
-	slog.Info("the plugin is running")
+	//slog.Info("the plugin is running")
 	goPlugin.Serve(&goPlugin.ServeConfig{
 		HandshakeConfig: handshakeConfig,
 		Plugins:         pluginMap,
