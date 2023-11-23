@@ -126,6 +126,7 @@ func (r *RpcPlugin) updateRoute(ctx context.Context, routeName string, rollout *
 	if err != nil {
 		if k8serrors.IsNotFound(err) {
 			msg := fmt.Sprintf("Route %q not found", routeName)
+			fmt.Println("OpenshiftRouteNotFound:" + msg)
 			//slog.Error("OpenshiftRouteNotFound: " + msg)
 		}
 		return err
