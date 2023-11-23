@@ -6,8 +6,6 @@ import (
 	"fmt"
 	"strings"
 
-	"log/slog"
-
 	"github.com/argoproj-labs/rollouts-plugin-trafficrouter-openshift/pkg/utils"
 	"github.com/argoproj/argo-rollouts/pkg/apis/rollouts/v1alpha1"
 	rolloutsPlugin "github.com/argoproj/argo-rollouts/rollout/trafficrouting/plugin/rpc"
@@ -74,7 +72,7 @@ func (r *RpcPlugin) SetWeight(rollout *v1alpha1.Rollout, desiredWeight int32, ad
 	ctx := context.Background()
 
 	for _, route := range openshift.Routes {
-		slog.Info("updating route", slog.String("name", route))
+		//slog.Info("updating route", slog.String("name", route))
 		namespace := rollout.Namespace
 		routeName := route
 		if strings.Contains(route, "/") {
@@ -82,10 +80,10 @@ func (r *RpcPlugin) SetWeight(rollout *v1alpha1.Rollout, desiredWeight int32, ad
 			routeName = strings.Split(route, "/")[1]
 		}
 		if err := r.updateRoute(ctx, routeName, rollout, desiredWeight, namespace); err != nil {
-			slog.Error("failed to update route", slog.String("name", route), slog.Any("err", err))
+			//slog.Error("failed to update route", slog.String("name", route), slog.Any("err", err))
 			return pluginTypes.RpcError{ErrorString: err.Error()}
 		}
-		slog.Info("successfully updated route", slog.String("name", route))
+		//slog.Info("successfully updated route", slog.String("name", route))
 	}
 	return pluginTypes.RpcError{}
 }
@@ -128,7 +126,7 @@ func (r *RpcPlugin) updateRoute(ctx context.Context, routeName string, rollout *
 	if err != nil {
 		if k8serrors.IsNotFound(err) {
 			msg := fmt.Sprintf("Route %q not found", routeName)
-			slog.Error("OpenshiftRouteNotFound: " + msg)
+			//slog.Error("OpenshiftRouteNotFound: " + msg)
 		}
 		return err
 	}
@@ -139,13 +137,13 @@ func (r *RpcPlugin) updateRoute(ctx context.Context, routeName string, rollout *
 		return nil
 	}
 
-	slog.Info("updating default backend weight to " + string(altWeight))
+	//slog.Info("updating default backend weight to " + string(altWeight))
 	openshiftRoute.Spec.To.Weight = &altWeight
 	if desiredWeight == 0 {
-		slog.Info("deleting alternateBackends")
+		//slog.Info("deleting alternateBackends")
 		openshiftRoute.Spec.AlternateBackends = nil
 	} else {
-		slog.Info("updating alternate backend weight to " + string(desiredWeight))
+		//slog.Info("updating alternate backend weight to " + string(desiredWeight))
 		openshiftRoute.Spec.AlternateBackends = []routev1.RouteTargetReference{{
 			Kind:   "Service",
 			Name:   routeName,

@@ -3,13 +3,12 @@ package plugin
 import (
 	"context"
 	"encoding/json"
-	"log/slog"
+
 	"os"
 	"testing"
 	"time"
 
 	"github.com/argoproj-labs/rollouts-plugin-trafficrouter-openshift/pkg/mocks"
-	"github.com/argoproj-labs/rollouts-plugin-trafficrouter-openshift/pkg/utils"
 
 	fakeDynClient "k8s.io/client-go/dynamic/fake"
 
@@ -28,7 +27,7 @@ var testHandshake = goPlugin.HandshakeConfig{
 }
 
 func TestRunSuccessfully(t *testing.T) {
-	utils.InitLogger(slog.LevelDebug)
+	//utils.InitLogger(slog.LevelDebug)
 
 	ctx, cancel := context.WithCancel(context.Background())
 	defer cancel()
@@ -123,7 +122,7 @@ func newRollout(stableSvc, canarySvc, routeName string) *v1alpha1.Rollout {
 	}
 	encodedContourConfig, err := json.Marshal(contourConfig)
 	if err != nil {
-		slog.Error("marshal the route's config is failed", slog.Any("err", err))
+		//slog.Error("marshal the route's config is failed", slog.Any("err", err))
 		os.Exit(1)
 	}
 

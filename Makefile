@@ -4,7 +4,7 @@ lint:
 
 .PHONY: build
 build:
-	CGO_ENABLED=0 GOOS=linux GOARCH=$(TARGETARCH) go build -o rollouts-plugin-trafficrouter-openshift ./
+	CGO_ENABLED=0 go build -o rollouts-plugin-trafficrouter-openshift ./
 
 .PHONY: release
 release:
